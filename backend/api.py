@@ -1,30 +1,24 @@
 import os
-
 import uvicorn
 from fastapi import FastAPI
+from fastapi.requests import Request
+from fastapi.responses import FileResponse
+
+from voicer import Voicer
+
+
+BACKEND_PORT = int(os.getenv('BACKEND_PORT'))
 
 app = FastAPI()
+voicer = Voicer()
 
+@app.post("/voice/")
+async def voice(request: Request):
+    request_data = await request.json()
+    text = request_data["text"]
 
-@app.get("/")
-def hello():
-    return "Все робит на тесте"
+    file_name = voicer.predict(text)
+    return FileResponse(file_name, media_type="audio/mpeg")
 
-
-# @app.post("/signup/")
-# async def signup(request: Request):
-#     print("signup...")
-#     parsed_data = await request.json()
-#     dbresponse = db.signup(parsed_data)
-#     return JSONResponse(content=dbresponse, status_code=200)
-
-
-# @app.post("/login/")
-# async def login(request: Request):
-#     parsed_data = await request.json()
-#     dbresponse = db.login(parsed_data)
-#     return JSONResponse(content=dbresponse, status_code=200)
-
-
-if __name__ == '__main__':
-    uvicorn.run(app, host="0.0.0.0", port=os.getenv('BACKEND_PORT'))
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=BACKEND_PORT)
