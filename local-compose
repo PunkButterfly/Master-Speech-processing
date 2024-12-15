@@ -2,11 +2,11 @@
 
 # env
 # project name / docker compose name
-export PROJECT_NAME=service-cicd
+export PROJECT_NAME=speech-processing
 
 # ports
-export FRONTEND_PORT=8005
-export BACKEND_PORT=8006
+export BACKEND_PORT=20001
+export FRONTEND_PORT=20002
 
 export BACKEND_CONTAINER_NAME=$PROJECT_NAME-local-backend
 export FRONTEND_CONTAINER_NAME=$PROJECT_NAME-local-frontend
